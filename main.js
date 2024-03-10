@@ -57,12 +57,12 @@ const gameFlow = (function () {
 
   const playRound = (row, col) => {
     gameBoard.crossCell(currentPlayer.marker, row, col);
+    checkWinner(currentPlayer);
     if (currentPlayer == players.getPlayers().player1) {
       currentPlayer = players.getPlayers().player2;
     } else {
       currentPlayer = players.getPlayers().player1;
     }
-    checkWinner(currentPlayer);
   };
   const gameReset = () => gameBoard.reset();
 
@@ -70,15 +70,24 @@ const gameFlow = (function () {
   // whenever called executes crossCell
 })();
 gameFlow.playRound(0, 0);
-gameFlow.playRound(1, 0);
 gameFlow.playRound(0, 1);
+gameFlow.playRound(1, 0);
+gameFlow.playRound(0, 4);
 gameFlow.playRound(2, 0);
-gameFlow.playRound(0, 2); // 0,1,2
 
 function checkWinner(player) {
   let board = gameBoard.getBoard();
-  const checkRow = () => {};
-  checkRow();
+
+  const rowWin = board.find(
+    (item) =>
+      JSON.stringify(item) ==
+      JSON.stringify([player.marker, player.marker, player.marker])
+  );
+
+  console.log(colWin);
+  if (rowWin) {
+    console.log(`Game over ${player.name} Wins`);
+  }
 }
 
 //  For each index value in the winCon, if one is equal to
