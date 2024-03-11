@@ -71,11 +71,11 @@ const gameFlow = (function () {
   // whenever called executes crossCell
 })();
 gameFlow.playRound(0, 0); // X turn
-gameFlow.playRound(0, 1); // O turn
-// gameFlow.playRound(1, 0); // X turn
-// gameFlow.playRound(1, 1); // O turn
-// gameFlow.playRound(2, 0); // X turn
-// gameFlow.playRound(2, 1); // O turn
+gameFlow.playRound(1, 0); // O turn
+gameFlow.playRound(1, 1); // X turn
+gameFlow.playRound(2, 0); // O turn
+gameFlow.playRound(2, 2); // X turn
+gameFlow.playRound(2, 1); // O turn
 
 function checkWinner(player) {
   let board = gameBoard.getBoard();
@@ -93,10 +93,19 @@ function checkWinner(player) {
       item[2] == player.marker
     );
   }
-
-  if (rowWin || colWin) {
+  const diagWin = () => {
+    return (
+      (board[0][0] == player.marker &&
+        board[1][1] == player.marker &&
+        board[2][2] == player.marker) ||
+      (board[0][2] == player.marker &&
+        board[1][1] == player.marker &&
+        board[2][0] == player.marker)
+    );
+  };
+  if (rowWin || colWin || diagWin()) {
     console.log(`Game over ${player.name} Wins`);
-    gameBoard.reset();
+    // gameBoard.reset();
   }
 }
 // ['X', 'O', null]
