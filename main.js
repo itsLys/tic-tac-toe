@@ -1,39 +1,4 @@
 // Game of TicTacToe
-
-const gameBoard = (function () {
-  const board = [];
-
-  for (let i = 0; i < 3; i++) {
-    board.push([]);
-    for (let j = 0; j < 3; j++) {
-      board[i].push(null);
-    }
-  }
-
-  const crossCell = (marker, row, col) => {
-    if (
-      row > board.length - 1 ||
-      col > board.length - 1 ||
-      row < 0 ||
-      col < 0 ||
-      board[row][col] != null
-    ) {
-      return "Wrong input, Try again please";
-    }
-    board[row][col] = marker;
-  };
-
-  const reset = () => {
-    for (let i = 0; i < board.length; i++) {
-      board[i] = null;
-    }
-    // return board;
-  };
-
-  const getBoard = () => board;
-  return { getBoard, crossCell, reset };
-})();
-
 const players = (function () {
   const player1 = {
     name: "Steve",
@@ -51,29 +16,66 @@ const players = (function () {
   const getPlayers = () => playerObj;
   return { getPlayers };
 })();
+const gameBoard = (function () {
+  let board = [];
 
-const gameFlow = (function () {
-  let currentPlayer = players.getPlayers().player1;
-
-  const playRound = (row, col) => {
-    gameBoard.crossCell(currentPlayer.marker, row, col);
-    checkWinner(currentPlayer);
+  for (let i = 0; i < 3; i++) {
+    board.push([]);
+    for (let j = 0; j < 3; j++) {
+      board[i].push(null);
+    }
+  }
+  let currentPlayer = players.getPlayers().player2;
+  const crossCell = (row, col) => {
     if (currentPlayer == players.getPlayers().player1) {
       currentPlayer = players.getPlayers().player2;
     } else {
       currentPlayer = players.getPlayers().player1;
     }
+
+    if (
+      row > board.length - 1 ||
+      col > board.length - 1 ||
+      row < 0 ||
+      col < 0 ||
+      board[row][col] != null
+    ) {
+      return "Wrong input, Try again please";
+    } else {
+      board[row][col] = currentPlayer.marker;
+      checkWinner(currentPlayer);
+    }
+  };
+
+  const reset = () => {
+    board = [];
+    for (let i = 0; i < 3; i++) {
+      board.push([]);
+      for (let j = 0; j < 3; j++) {
+        board[i].push(null);
+      }
+    }
+  };
+
+  const getBoard = () => board;
+  return { getBoard, crossCell, reset };
+})();
+
+const gameFlow = (function () {
+  const playRound = (row, col) => {
+    gameBoard.crossCell(row, col);
   };
   const gameReset = () => gameBoard.reset();
 
   return { playRound, gameReset };
   // whenever called executes crossCell
 })();
-gameFlow.playRound(0, 0);
-gameFlow.playRound(0, 1);
-gameFlow.playRound(1, 0);
-gameFlow.playRound(0, 4);
-gameFlow.playRound(2, 0);
+gameFlow.playRound(0, 0); // X turn
+gameFlow.playRound(0, 1); // O turn
+// gameFlow.playRound(1, 0); // X turn
+// gameFlow.playRound(1, 1); // O turn
+// gameFlow.playRound(2, 0); // X turn
+// gameFlow.playRound(2, 1); // O turn
 
 function checkWinner(player) {
   let board = gameBoard.getBoard();
@@ -83,13 +85,23 @@ function checkWinner(player) {
       JSON.stringify(item) ==
       JSON.stringify([player.marker, player.marker, player.marker])
   );
+  const colWin = board.every(hasMarker);
+  function hasMarker(item) {
+    return (
+      item[0] == player.marker ||
+      item[1] == player.marker ||
+      item[2] == player.marker
+    );
+  }
 
-  console.log(colWin);
-  if (rowWin) {
+  if (rowWin || colWin) {
     console.log(`Game over ${player.name} Wins`);
+    gameBoard.reset();
   }
 }
-
+// ['X', 'O', null]
+// ['X', null, null]
+// ['X', null, null]
 //  For each index value in the winCon, if one is equal to
 //  If the index of board[i] is X
 // and for each Boarder[i] if I is equal to one of Wincon[i]
