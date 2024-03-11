@@ -25,14 +25,8 @@ const gameBoard = (function () {
       board[i].push(null);
     }
   }
-  let currentPlayer = players.getPlayers().player2;
+  let currentPlayer = players.getPlayers().player1;
   const crossCell = (row, col) => {
-    if (currentPlayer == players.getPlayers().player1) {
-      currentPlayer = players.getPlayers().player2;
-    } else {
-      currentPlayer = players.getPlayers().player1;
-    }
-
     if (
       row > board.length - 1 ||
       col > board.length - 1 ||
@@ -44,6 +38,11 @@ const gameBoard = (function () {
     } else {
       board[row][col] = currentPlayer.marker;
       checkWinner(currentPlayer);
+      if (currentPlayer == players.getPlayers().player1) {
+        currentPlayer = players.getPlayers().player2;
+      } else {
+        currentPlayer = players.getPlayers().player1;
+      }
     }
   };
 
@@ -71,11 +70,8 @@ const gameFlow = (function () {
   // whenever called executes crossCell
 })();
 gameFlow.playRound(0, 0); // X turn
-gameFlow.playRound(1, 0); // O turn
-gameFlow.playRound(1, 1); // X turn
-gameFlow.playRound(2, 0); // O turn
-gameFlow.playRound(2, 2); // X turn
-gameFlow.playRound(2, 1); // O turn
+gameFlow.playRound(0, 0); // O turn
+gameFlow.playRound(1, 1); // Still O
 
 function checkWinner(player) {
   let board = gameBoard.getBoard();
@@ -105,7 +101,7 @@ function checkWinner(player) {
   };
   if (rowWin || colWin || diagWin()) {
     console.log(`Game over ${player.name} Wins`);
-    // gameBoard.reset();
+    gameBoard.reset();
   }
 }
 // ['X', 'O', null]
