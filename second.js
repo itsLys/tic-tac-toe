@@ -23,12 +23,17 @@ const GameBoard = (function () {
 			return false;
 		} else {
 			grid[x - 1][y - 1] = marker;
-			console.table(getBoard());
+			// console.table(getBoard());
 			return true;
 		}
 	};
+	const resetBoard = () => {
+		grid.forEach((array, i) =>
+			grid[i].forEach((item, j) => (grid[i][j] = null))
+		);
+	};
 
-	return { getBoard, crossCell };
+	return { getBoard, crossCell, resetBoard };
 })();
 
 const Players = (function () {
@@ -58,7 +63,6 @@ const gameFlow = (function () {
 		} else {
 			if (GameBoard.crossCell(x, y, currentPlayer.marker)) {
 				checkWin();
-				alternateCurrentPlayer();
 			}
 		}
 	};
@@ -70,14 +74,17 @@ const gameFlow = (function () {
 	const getCurrentPlayer = () => currentPlayer;
 
 	const checkWin = () => {
-		// a row win is if one array inside the grid has the same items
-		// so for each item in the grid, if the items inside of of the item are all the same, it is a row win
 		GameBoard.getBoard().forEach((array) => {
-			if (array.every((cell) => cell == "O")) console.log("O wins");
-			else if (array.every((cell) => cell == "X")) console.log("X wins");
+			if (array.every((cell) => cell == currentPlayer.marker)) {
+				console.log(`${currentPlayer.name} ${currentPlayer.marker} Won`);
+				restartGame();
+			} else alternateCurrentPlayer();
 		});
 	};
-
+	const restartGame = () => {
+		GameBoard.resetBoard();
+		currentPlayer = player1;
+	};
 	return { playRound, getCurrentPlayer, checkWin };
 })();
 gameFlow.playRound(3, 1);
