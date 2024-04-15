@@ -23,7 +23,7 @@ const GameBoard = (function () {
 			return false;
 		} else {
 			grid[x - 1][y - 1] = marker;
-			// console.table(getBoard());
+			console.table(getBoard());
 			return true;
 		}
 	};
@@ -74,22 +74,42 @@ const gameFlow = (function () {
 	const getCurrentPlayer = () => currentPlayer;
 
 	const checkWin = () => {
-		GameBoard.getBoard().forEach((array) => {
-			if (array.every((cell) => cell == currentPlayer.marker)) {
-				console.log(`${currentPlayer.name} ${currentPlayer.marker} Won`);
-				restartGame();
-			} else alternateCurrentPlayer();
-		});
+		let board = GameBoard.getBoard();
+
+		// board.forEach((array) => {
+		// 	// row win
+		// 	if (array.every((cell) => cell == currentPlayer.marker)) {
+		// 		console.log(`${currentPlayer.name} ${currentPlayer.marker} Won`);
+		// 		restartGame();
+		// 	} else alternateCurrentPlayer();
+		// });
+		if (
+			board.find((array) =>
+				array.every((item) => item == currentPlayer.marker)
+			) ||
+			board.every(
+				// Col Win
+				(array) =>
+					array[0] == currentPlayer.marker ||
+					array[1] == currentPlayer.marker ||
+					array[2] == currentPlayer.marker
+			)
+		) {
+			console.log(`${currentPlayer.name} ${currentPlayer.marker} Wins`);
+			restartGame();
+		} else {
+			alternateCurrentPlayer();
+		}
 	};
 	const restartGame = () => {
 		GameBoard.resetBoard();
 		currentPlayer = player1;
 	};
-	return { playRound, getCurrentPlayer, checkWin };
+	return { playRound, getCurrentPlayer, checkWin, restartGame };
 })();
-gameFlow.playRound(3, 1);
 gameFlow.playRound(1, 1);
-gameFlow.playRound(3, 2);
 gameFlow.playRound(1, 2);
-gameFlow.playRound(3, 3);
+gameFlow.playRound(2, 1);
 gameFlow.playRound(1, 3);
+gameFlow.playRound(3, 1);
+gameFlow.playRound(2, 3);
