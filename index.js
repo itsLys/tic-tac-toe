@@ -1,13 +1,8 @@
 const GameBoard = (function () {
-	// const grid = [
-	// 	[null, null, null],
-	// 	[null, null, null],
-	// 	[null, null, null],
-	// ];
 	const grid = [
-		[null, "O", "O"],
-		["O", "X", "X"],
-		["X", "X", "O"],
+		[null, null, null],
+		[null, null, null],
+		[null, null, null],
 	];
 
 	const getBoard = () => grid;
@@ -114,4 +109,3 @@ const gameFlow = (function () {
 	};
 	return { playRound, getCurrentPlayer, checkWin, restartGame };
 })();
-// gameFlow.playRound(1, 1);
