@@ -1,14 +1,14 @@
 const GameBoard = (function () {
-	const grid = [
-		[null, null, null],
-		[null, null, null],
-		[null, null, null],
-	];
 	// const grid = [
-	// 	["X", "X", "O"],
-	// 	["X", "X", "O"],
-	// 	["O", "O", "O"],
+	// 	[null, null, null],
+	// 	[null, null, null],
+	// 	[null, null, null],
 	// ];
+	const grid = [
+		[null, "X", null],
+		[null, null, null],
+		["X", "X", null],
+	];
 
 	const getBoard = () => grid;
 
@@ -23,7 +23,7 @@ const GameBoard = (function () {
 			return false;
 		} else {
 			grid[x - 1][y - 1] = marker;
-			console.table(getBoard());
+			// console.table(getBoard());
 			return true;
 		}
 	};
@@ -76,16 +76,10 @@ const gameFlow = (function () {
 	const checkWin = () => {
 		let board = GameBoard.getBoard();
 
-		// board.forEach((array) => {
-		// 	// row win
-		// 	if (array.every((cell) => cell == currentPlayer.marker)) {
-		// 		console.log(`${currentPlayer.name} ${currentPlayer.marker} Won`);
-		// 		restartGame();
-		// 	} else alternateCurrentPlayer();
-		// });
 		if (
-			board.find((array) =>
-				array.every((item) => item == currentPlayer.marker)
+			board.find(
+				// row win
+				(array) => array.every((item) => item == currentPlayer.marker)
 			) ||
 			board.every(
 				// Col Win
@@ -93,7 +87,11 @@ const gameFlow = (function () {
 					array[0] == currentPlayer.marker ||
 					array[1] == currentPlayer.marker ||
 					array[2] == currentPlayer.marker
-			)
+			) ||
+			board.every((array, index) => {
+				board[index][index] == currentPlayer.marker || // diag left to right
+					board[index][board.length - 1 - index]; // diag right to left
+			})
 		) {
 			console.log(`${currentPlayer.name} ${currentPlayer.marker} Wins`);
 			restartGame();
@@ -107,9 +105,3 @@ const gameFlow = (function () {
 	};
 	return { playRound, getCurrentPlayer, checkWin, restartGame };
 })();
-gameFlow.playRound(1, 1);
-gameFlow.playRound(1, 2);
-gameFlow.playRound(2, 1);
-gameFlow.playRound(1, 3);
-gameFlow.playRound(3, 1);
-gameFlow.playRound(2, 3);
