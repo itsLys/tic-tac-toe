@@ -5,9 +5,9 @@ const GameBoard = (function () {
 	// 	[null, null, null],
 	// ];
 	const grid = [
-		[null, null, null],
-		["O", "X", "O"],
-		["X", null, "O"],
+		[null, "O", "O"],
+		["O", "X", "X"],
+		["X", "X", "O"],
 	];
 
 	const getBoard = () => grid;
@@ -95,7 +95,15 @@ const gameFlow = (function () {
 			)
 		) {
 			console.log(`${currentPlayer.name} ${currentPlayer.marker} Wins`);
-			// restartGame();
+			restartGame();
+		} else if (
+			!board.find(
+				// tie
+				(array) => array.indexOf(null) >= 0
+			)
+		) {
+			console.log(`it's a tie`);
+			restartGame();
 		} else {
 			alternateCurrentPlayer();
 		}
@@ -106,4 +114,4 @@ const gameFlow = (function () {
 	};
 	return { playRound, getCurrentPlayer, checkWin, restartGame };
 })();
-gameFlow.playRound(1, 3);
+// gameFlow.playRound(1, 1);
