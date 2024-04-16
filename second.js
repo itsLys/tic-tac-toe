@@ -5,9 +5,9 @@ const GameBoard = (function () {
 	// 	[null, null, null],
 	// ];
 	const grid = [
-		[null, "X", null],
 		[null, null, null],
-		["X", "X", null],
+		["O", "X", "O"],
+		["X", null, "O"],
 	];
 
 	const getBoard = () => grid;
@@ -83,10 +83,15 @@ const gameFlow = (function () {
 			) ||
 			board.every(
 				// Col Win
-				(array) =>
-					array[0] == currentPlayer.marker ||
-					array[1] == currentPlayer.marker ||
-					array[2] == currentPlayer.marker
+				(array, index) => array[0] == currentPlayer.marker
+			) ||
+			board.every(
+				// Col Win
+				(array) => array[1] == currentPlayer.marker
+			) ||
+			board.every(
+				// Col Win
+				(array) => array[2] == currentPlayer.marker
 			) ||
 			board.every((array, index) => {
 				board[index][index] == currentPlayer.marker || // diag left to right
@@ -94,7 +99,7 @@ const gameFlow = (function () {
 			})
 		) {
 			console.log(`${currentPlayer.name} ${currentPlayer.marker} Wins`);
-			restartGame();
+			// restartGame();
 		} else {
 			alternateCurrentPlayer();
 		}
