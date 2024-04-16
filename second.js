@@ -81,22 +81,18 @@ const gameFlow = (function () {
 				// row win
 				(array) => array.every((item) => item == currentPlayer.marker)
 			) ||
+			// Col wins
+			board.every((array, index) => array[0] == currentPlayer.marker) ||
+			board.every((array) => array[1] == currentPlayer.marker) ||
+			board.every((array) => array[2] == currentPlayer.marker) ||
+			// diag wins
 			board.every(
-				// Col Win
-				(array, index) => array[0] == currentPlayer.marker
+				(array, index) => board[index][index] == currentPlayer.marker
 			) ||
 			board.every(
-				// Col Win
-				(array) => array[1] == currentPlayer.marker
-			) ||
-			board.every(
-				// Col Win
-				(array) => array[2] == currentPlayer.marker
-			) ||
-			board.every((array, index) => {
-				board[index][index] == currentPlayer.marker || // diag left to right
-					board[index][board.length - 1 - index]; // diag right to left
-			})
+				(array, index) =>
+					board[index][board.length - 1 - index] == currentPlayer.marker
+			)
 		) {
 			console.log(`${currentPlayer.name} ${currentPlayer.marker} Wins`);
 			// restartGame();
@@ -110,3 +106,4 @@ const gameFlow = (function () {
 	};
 	return { playRound, getCurrentPlayer, checkWin, restartGame };
 })();
+gameFlow.playRound(1, 3);
