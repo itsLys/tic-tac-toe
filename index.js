@@ -7,17 +7,15 @@ const GameBoard = (function () {
 
 	const getBoard = () => grid;
 
-	const crossCell = (x, y, marker) => {
+	const crossCell = (x, y) => {
 		// checks for valid coordinates
-		marker = marker.toUpperCase();
-		if (!marker || (marker != "X" && marker != "O")) {
-			console.log("failed");
-			return false;
-		} else if (grid[x - 1][y - 1]) {
+		const currentPlayer = gameFlow.getCurrentPlayer();
+		if (grid[x - 1][y - 1]) {
+			// checks if the cell is crossed
 			console.log("failed");
 			return false;
 		} else {
-			grid[x - 1][y - 1] = marker;
+			grid[x - 1][y - 1] = currentPlayer.marker;
 			// console.table(getBoard());
 			return true;
 		}
